@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محاسبه‌گر فرمول</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Tahoma', 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .result {
+            font-weight: bold;
+            padding: 10px;
+            background-color: #f0f8ff;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        h1 {
+            color: #007bff;
+            margin-bottom: 30px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .card-header {
+            background-color: #e7f1ff;
+            font-weight: bold;
+        }
+        .input-group-text {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">محاسبه‌گر فرمول</h1>
+        
+        <div class="card">
+            <div class="card-header">
+                مثال اول: محاسبه قیمت کل
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="fee">قیمت واحد:</label>
+                            <input type="number" class="form-control" id="fee" placeholder="قیمت واحد">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="count">تعداد:</label>
+                            <input type="number" class="form-control" id="count" placeholder="تعداد">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="discount">تخفیف:</label>
+                            <input type="number" class="form-control" id="discount" placeholder="تخفیف">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <span class="input-group-text">نتیجه:</span>
+                            <input type="text" class="form-control result-field" readonly formula="count*fee-discount">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                مثال دوم: محاسبه مساحت دایره
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="radius">شعاع دایره:</label>
+                            <input type="number" class="form-control" id="radius" placeholder="شعاع دایره">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <span class="input-group-text">مساحت:</span>
+                            <input type="text" class="form-control result-field" readonly formula="Math.PI * radius * radius">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                مثال سوم: محاسبه میانگین نمرات
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="score1">نمره اول:</label>
+                            <input type="number" class="form-control" id="score1" placeholder="نمره اول">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="score2">نمره دوم:</label>
+                            <input type="number" class="form-control" id="score2" placeholder="نمره دوم">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="score3">نمره سوم:</label>
+                            <input type="number" class="form-control" id="score3" placeholder="نمره سوم">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="score4">نمره چهارم:</label>
+                            <input type="number" class="form-control" id="score4" placeholder="نمره چهارم">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <span class="input-group-text">میانگین:</span>
+                            <input type="text" class="form-control result-field" readonly formula="(parseFloat(score1 || 0) + parseFloat(score2 || 0) + parseFloat(score3 || 0) + parseFloat(score4 || 0)) / (!!score1 + !!score2 + !!score3 + !!score4 || 1)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // تابع اصلی برای مدیریت فرمول‌ها
+        document.addEventListener('DOMContentLoaded', function() {
+            // پیدا کردن تمام المان‌هایی که دارای ویژگی formula هستند
+            const formulaElements = document.querySelectorAll('[formula]');
+            
+            // برای هر المان، تابع محاسبه را اعمال می‌کنیم
+            formulaElements.forEach(formulaElement => {
+                const evaluator = formulaElement.getAttribute('formula');
+                if (!evaluator) return; // اگر formula وجود نداشت، از این المان می‌گذریم
+                
+                // پیدا کردن تمام id های موجود در فرمول
+                const idReferences = findIdReferences(evaluator);
+                
+                // اضافه کردن event listener برای هر ورودی که در فرمول استفاده شده
+                idReferences.forEach(id => {
+                    const inputElement = document.getElementById(id);
+                    if (inputElement) {
+                        inputElement.addEventListener('input', () => {
+                            calculateFormula(formulaElement, evaluator);
+                        });
+                    }
+                });
+                
+                // محاسبه اولیه فرمول
+                calculateFormula(formulaElement, evaluator);
+            });
+        });
+
+        // تابع برای پیدا کردن id های استفاده شده در فرمول
+        function findIdReferences(formula) {
+            // با استفاده از regex، تمام کلماتی که می‌توانند id باشند را پیدا می‌کنیم
+            // به استثنای کلمات کلیدی جاوااسکریپت و توابع ریاضی
+            const javascriptKeywords = ['Math', 'parseFloat', 'parseInt', 'Number', 'String', 'Boolean', 'Date', 'Array', 'Object', 'Function', 'RegExp', 'Error', 'Symbol', 'Promise', 'Proxy', 'Reflect', 'JSON', 'true', 'false', 'null', 'undefined', 'NaN', 'Infinity', 'this', 'arguments', 'super', 'console', 'window', 'document', 'if', 'else', 'for', 'while', 'do', 'switch', 'case', 'default', 'break', 'continue', 'return', 'with', 'function', 'var', 'let', 'const', 'new', 'class', 'extends', 'get', 'set', 'static', 'yield', 'async', 'await', 'try', 'catch', 'finally', 'throw', 'typeof', 'instanceof', 'in', 'of', 'delete', 'void', 'debugger'];
+            
+            // الگوی regex برای پیدا کردن احتمالی id ها
+            const idPattern = /[a-zA-Z_][a-zA-Z0-9_]*/g;
+            
+            // پیدا کردن همه تطابق‌ها
+            const matches = formula.match(idPattern) || [];
+            
+            // حذف کلمات کلیدی و تکراری
+            const uniqueIds = [...new Set(matches)].filter(word => !javascriptKeywords.includes(word));
+            
+            return uniqueIds;
+        }
+
+        // تابع برای محاسبه فرمول و نمایش نتیجه
+        function calculateFormula(formulaElement, evaluator) {
+            try {
+                // پیدا کردن مقادیر ورودی‌ها و ایجاد متغیرهای متناظر
+                const idReferences = findIdReferences(evaluator);
+                const context = {};
+                
+                // برای هر id، مقدار متناظر آن را از ورودی می‌خوانیم و در context ذخیره می‌کنیم
+                idReferences.forEach(id => {
+                    const inputElement = document.getElementById(id);
+                    if (inputElement) {
+                        const value = inputElement.value;
+                        context[id] = value === '' ? '' : Number(value);
+                    } else {
+                        // اگر المان با این id پیدا نشد، آن را undefined می‌گذاریم
+                        context[id] = undefined;
+                    }
+                });
+                
+                // ایجاد یک تابع با متغیرهای لازم و اجرای فرمول
+                const args = idReferences;
+                const values = args.map(arg => context[arg]);
+                
+                const funcBody = `
+                    try {
+                        return ${evaluator};
+                    } catch (error) {
+                        return "Invalid Formula";
+                    }
+                `;
+                
+                const calculationFunction = new Function(...args, funcBody);
+                let result = calculationFunction(...values);
+                
+                // بررسی نتیجه و نمایش آن
+                if (result === '' || result === undefined || result === null || isNaN(result)) {
+                    formulaElement.value = '';
+                } else if (typeof result === 'number') {
+                    // گرد کردن اعداد اعشاری به دو رقم بعد از اعشار
+                    formulaElement.value = Math.round(result * 100) / 100;
+                } else {
+                    formulaElement.value = result;
+                }
+            } catch (error) {
+                // در صورت بروز خطا، پیام Invalid Formula نمایش داده می‌شود
+                formulaElement.value = 'Invalid Formula';
+                console.error('Error calculating formula:', error);
+            }
+        }
+    </script>
+</body>
+</html>
